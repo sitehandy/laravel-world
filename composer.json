@@ -1,0 +1,19 @@
+{
+    "name": "sitehandy/laravel-world",
+    "description": "Provide countries, states, and cities relations database.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Amirol Zolkifli",
+            "email": "sitehandy@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Sitehandy\\World\\": "src/"
+        }
+    }
+}
