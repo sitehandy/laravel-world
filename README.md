@@ -84,9 +84,10 @@ composer dump-autoload
 ```
 The above process will copy seeder files to database/seeds
 
-- Init (Run Seeder)
+- Init (Run Migrations & Seeder)
 
 ```php
+php artisan migrate
 php artisan db:seed --class=WorldTableSeeder
 ```
 
