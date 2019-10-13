@@ -181,4 +181,4 @@ If you want contribute to this library, issue and pr are welcome.
 
 This package published under MIT license. If you have any question or suggestion, please feel free to submit a issue.
 
-All the best!.
+Have a nice day and all the best!
