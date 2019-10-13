@@ -2,7 +2,7 @@
 
 This package focused on World Countries, Regions, and Cities database with locale support for Laravel.
 
-Note: This package is originally forked from https://github.com/Sitehandy/laravel-world/
+Note: This package is originally forked from https://github.com/khsing/laravel-world/
 
 ## Conceptions
 
