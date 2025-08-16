@@ -277,7 +277,7 @@ If you want contribute to this library, issue and pr are welcome. please followi
 
 ## Changelog
 
-### Version 1.0.0 (2024-01-XX)
+### Version 1.0.0 (2025-08-16)
 - **Initial release** of sitehandy/world package
 - **Breaking change**: Namespace changed from `Khsing\World` to `Sitehandy\World`
 - **Added**: Full Laravel 9-12 compatibility with modern syntax
