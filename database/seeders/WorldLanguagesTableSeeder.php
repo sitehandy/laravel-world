@@ -1,21 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
+/**
+ * Seeder for the world_languages table.
+ * 
+ * This seeder populates the world_languages table with comprehensive
+ * language data including ISO codes and native names.
+ */
 class WorldLanguagesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        \DB::table('world_languages')->truncate();
+        DB::table('world_languages')->truncate();
 
-        \DB::table('world_languages')->insert([
+        DB::table('world_languages')->insert([
             ['iso_language_name' => 'Abkhazian', 'native_name' => 'аҧсуа бызшәа, аҧсшәа', 'iso2' => 'ab', 'iso3' => 'abk'],
             ['iso_language_name' => 'Afar', 'native_name' => 'Afaraf', 'iso2' => 'aa', 'iso3' => 'aar'],
             ['iso_language_name' => 'Afrikaans', 'native_name' => 'Afrikaans', 'iso2' => 'af', 'iso3' => 'afr'],

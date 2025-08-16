@@ -1,24 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
+/**
+ * Seeder for the world_countries table.
+ * 
+ * This seeder populates the world_countries table with comprehensive
+ * country data including names, codes, currency information, and geographical data.
+ */
 class WorldCountriesTableSeeder extends Seeder
 {
-
     /**
-     * Auto generated seed file
-     *
-     * @return void
+     * Run the database seeds.
      */
-    public function run()
+    public function run(): void
     {
+        DB::table('world_countries')->truncate();
         
-
-        \DB::table('world_countries')->truncate();
-        
-        \DB::table('world_countries')->insert(array (
+        DB::table('world_countries')->insert([
             0 => 
             array (
                 'id' => 1,
@@ -4269,7 +4273,7 @@ class WorldCountriesTableSeeder extends Seeder
                 'tld' => '.ss',
                 'callingcode' => '211',
             ),
-        ));
+        ]);
         
         
     }
