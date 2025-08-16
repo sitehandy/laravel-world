@@ -1,5 +1,5 @@
 <?php
-namespace Khsing\World\Models;
+namespace Sitehandy\World\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

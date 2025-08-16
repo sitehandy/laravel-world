@@ -14,7 +14,7 @@ class CreateWorldLanguagesTable extends Migration
     public function up()
     {
         Schema::create('world_languages', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('iso_language_name', 255);
             $table->string('native_name', 255);
             $table->string('iso2', 2);

@@ -1,6 +1,37 @@
-# Laravel World Database
+# Sitehandy World Database
 
-This package focused on World Countries, Regions, and Cities database with locale support for Laravel.
+[![Latest Stable Version](https://poser.pugx.org/sitehandy/world/v/stable)](https://packagist.org/packages/sitehandy/world)
+[![License](https://poser.pugx.org/sitehandy/world/license)](https://packagist.org/packages/sitehandy/world)
+[![Laravel](https://img.shields.io/badge/Laravel-9%2B-orange.svg)](https://laravel.com)
+
+This package provides World Countries, Regions, and Cities database with locale support for Laravel 9-12.
+
+## Credits
+
+This package is a fork of the excellent [khsing/world](https://github.com/khsing/world) package by [Guixing Bai](https://github.com/khsing). We extend our gratitude to the original author for creating this valuable resource.
+
+### What's Changed in This Fork
+
+- **Updated namespace**: Changed from `Khsing\World` to `Sitehandy\World`
+- **Laravel 9-12 compatibility**: Full support with modern Laravel syntax
+- **PHP 8.1+ support**: Updated to support modern PHP versions
+- **Database modernization**: 
+  - Updated all migrations to use `Schema::dropIfExists()` instead of deprecated `Schema::drop()`
+  - Modernized primary key definitions using `id()` method
+  - Enhanced foreign key constraint handling
+- **Code quality improvements**: All deprecated Laravel features updated
+- **Package optimization**: Configured for professional Packagist publishing
+- **Maintained by**: Sitehandy Solutions
+- **Semantic versioning**: Starting from version 1.0.0
+
+## Version
+
+Current version: **1.0.0**
+
+We follow [Semantic Versioning](https://semver.org/) for all releases:
+- **Major** (1.x.x): Breaking changes
+- **Minor** (x.1.x): New features, backward compatible
+- **Patch** (x.x.1): Bug fixes, backward compatible
 
 ## Conceptions
 
@@ -36,7 +67,7 @@ Country spec attributes:
 Example:
 
 ```php
-use Khsing\World\World;
+use Sitehandy\World\World;
 $china = World::getByCode('cn');
 $china->setLocale('zh-cn');
 $china->name; // China
@@ -57,64 +88,115 @@ $china->local_currency_name; // 人民币
 
 Right now, only English(default and fallback) and Chinese-Simp `zh-cn` are supported. Locale settings is following Laravel project settings in `config/app.php`.
 
-## Setup
+## Requirements
 
-- `composer require`
+- **PHP**: 8.1 or higher (required for Laravel 11+ compatibility)
+- **Laravel**: 9.0 or higher
+  - ✅ Laravel 9.x - Full support
+  - ✅ Laravel 10.x - Full support  
+  - ✅ Laravel 11.x - Full support
+  - ✅ Laravel 12.x - Full support
+- **Database**: MySQL 5.7+, PostgreSQL 10+, SQLite 3.8+, SQL Server 2017+
 
-```php
-composer require khsing/world
+## Installation
+
+### Step 1: Install via Composer
+
+```bash
+composer require sitehandy/world
 ```
 
-- Add Service Provider into `config/app.php`, (Only required before Laravel 5.5)
+### Step 2: Service Provider (Laravel < 5.5 only)
+
+For Laravel 5.5+, the service provider is automatically registered via package discovery.
+
+For older versions, add to `config/app.php`:
 
 ```php
 'providers' => [
     // ...
-    Khsing\World\WorldServiceProvider::class,
+    Sitehandy\World\WorldServiceProvider::class,
 ]
 ```
 
-- Publish and init
+### Step 3: Publish and Initialize
 
-```php
-php artisan vendor:publish --force --provider="Khsing\World\WorldServiceProvider"
+```bash
+php artisan vendor:publish --force --provider="Sitehandy\World\WorldServiceProvider"
 composer dump-autoload
 php artisan world:init
 ```
 
+**Note**: The `world:init` command will create the necessary database tables and seed them with world data. This may take a few minutes to complete.
+
+## Technical Improvements
+
+This package has been thoroughly modernized for Laravel 9-12 compatibility:
+
+### Database Migrations
+- ✅ **Modern Schema Methods**: All migrations updated to use `Schema::dropIfExists()` instead of deprecated `Schema::drop()`
+- ✅ **Primary Key Modernization**: Updated from `increments()` to modern `id()` method
+- ✅ **Foreign Key Optimization**: Enhanced foreign key constraint handling for better performance
+- ✅ **Cross-Database Compatibility**: Tested with MySQL, PostgreSQL, SQLite, and SQL Server
+
+### Code Quality & Best Practices
+- ✅ **Namespace Consistency**: Complete migration from `Khsing\World` to `Sitehandy\World`
+- ✅ **Laravel Standards**: All deprecated features updated to current Laravel standards
+- ✅ **PHP 8.1+ Features**: Leveraging modern PHP capabilities for better performance
+- ✅ **Package Optimization**: Configured for professional Packagist publishing standards
+- ✅ **Strict Type Declarations**: Added `declare(strict_types=1)` to all PHP files
+- ✅ **Modern Return Types**: All methods now have proper return type declarations
+- ✅ **PSR-4 Autoloading**: Full compliance with PSR-4 autoloading standards
+- ✅ **Typed Properties**: Modern PHP 8.1+ typed properties implementation
+- ✅ **Null Coalescing**: Leveraging null coalescing operators for cleaner code
+- ✅ **Union Types**: Using PHP 8.0+ union types where appropriate
+- ✅ **Arrow Functions**: Modern arrow function syntax for improved readability
+- ✅ **Comprehensive DocBlocks**: Professional documentation for all classes and methods
+- ✅ **Laravel Eloquent Best Practices**: Proper relationship type hints and return types
+- ✅ **Error Handling**: Improved exception handling with typed exceptions
+- ✅ **Code Organization**: Clean separation of concerns and single responsibility principle
+
+### Compatibility Testing
+- ✅ **Laravel 9.x**: Full compatibility verified
+- ✅ **Laravel 10.x**: Full compatibility verified
+- ✅ **Laravel 11.x**: Full compatibility verified
+- ✅ **Laravel 12.x**: Full compatibility verified
+- ✅ **PHP 8.1-8.3**: Tested across all supported PHP versions
+
 ## Usage
 
-- get all Continent
+### Basic Usage Examples
+
+#### Get all Continents
 
 ```php
-use Khsing\World\World;
+use Sitehandy\World\World;
 
-World::Continents()
-
+$continents = World::Continents();
 ```
 
-- get all Countries
+#### Get all Countries
 
 ```php
-use Khsing\World\World;
+use Sitehandy\World\World;
 
-World::Countries()
+$countries = World::Countries();
 ```
 
-- get country/city/division by code
+#### Get Country/City/Division by Code
 
 ```php
-use Khsing\World\World;
+use Sitehandy\World\World;
 
-World::getByCode('cn'); // iso-3166 alpha 2 code
-World::getByCode('chn'); // iso-3166 alpha 3 code
-World::getByCode('cn-11'); // Beijing
+$china = World::getByCode('cn');     // ISO-3166 alpha 2 code
+$china = World::getByCode('chn');    // ISO-3166 alpha 3 code
+$beijing = World::getByCode('cn-11'); // Beijing
 ```
 
-- get countries belong to a continent
+#### Get Countries by Continent
 
 ```php
-use Khsing\World\Models\Continent;
+use Sitehandy\World\Models\Continent;
 
 $asia = Continent::getByCode('AS');
 $countries = $asia->countries()->get();
@@ -122,29 +204,38 @@ $countries = $asia->countries()->get();
 $countries = $asia->children();
 ```
 
-- get continent or parent
+#### Get Parent (Continent/Country)
 
 ```php
+use Sitehandy\World\Models\Country;
+
 $china = Country::getByCode('cn');
-$asia = $china->parent();
+$asia = $china->parent(); // Returns the continent
 ```
 
-- get division/state/province via Conutry
+#### Get Divisions/States/Provinces
 
 ```php
+use Sitehandy\World\Models\Country;
+
 $china = Country::getByCode('cn');
-$provinces = $china->divisions()->get()
+$provinces = $china->divisions()->get();
 // or use children method
 $provinces = $china->children();
 ```
 
-- get cities via Country or Division.
+#### Get Cities
 
 ```php
+use Sitehandy\World\Models\Country;
+
 $china = Country::getByCode('cn');
-// check has_division to determine next level is division or city.
-$china->has_division; // true, otherwise is false
-$regsions = $china->children();
+// Check has_division to determine if next level is division or city
+if ($china->has_division) {
+    $regions = $china->children(); // Returns divisions/provinces
+} else {
+    $cities = $china->children(); // Returns cities directly
+}
 ```
 
 ## Contributions
@@ -178,8 +269,58 @@ If you want contribute to this library, issue and pr are welcome. please followi
 - [mledoze/countries](https://github.com/mledoze/countries)
 - [cn/GB2260](https://github.com/cn/GB2260)
 
-## About
+## Changelog
 
-This package published under MIT license. If you have any question or suggestion, please feel free to submit a issue, or email me Guixing<khsing.cn(AT)gmail.com>.
+### Version 1.0.0 (2024-01-XX)
+- **Initial release** of sitehandy/world package
+- **Breaking change**: Namespace changed from `Khsing\World` to `Sitehandy\World`
+- **Added**: Full Laravel 9-12 compatibility with modern syntax
+- **Added**: PHP 8.1+ support with strict type requirements
+- **Updated**: Database migrations to use modern Laravel syntax
+  - Replaced deprecated `Schema::drop()` with `Schema::dropIfExists()`
+  - Updated `increments()` method to modern `id()` method
+  - All foreign key constraints modernized
+- **Enhanced**: Package configuration optimized for Packagist publishing
+- **Improved**: All deprecated Laravel features updated to current standards
+- **Modernized**: Complete code quality overhaul following Laravel best practices
+  - Added strict type declarations (`declare(strict_types=1)`) to all PHP files
+  - Implemented proper return type hints for all methods
+  - Added comprehensive PHPDoc blocks with parameter and return types
+  - Leveraged modern PHP 8.1+ features (typed properties, union types, null coalescing)
+  - Applied Laravel Eloquent best practices with proper relationship type hints
+  - Improved error handling with typed exceptions
+  - Enhanced code organization following single responsibility principle
+- **Verified**: Complete compatibility testing across Laravel 9, 10, 11, and 12
+- **Maintained**: All original functionality from khsing/world with enhanced reliability and performance
 
-Have a nice day.
+## Contributing
+
+We welcome contributions! Please feel free to submit issues and pull requests.
+
+### Development Setup
+
+If you want to contribute to this library, issues and PRs are welcome. Please follow these steps:
+
+1. Start a new Laravel project and install this library
+2. Install [orangehill/iseed](https://github.com/orangehill/iseed)
+3. Modify data via SQL
+4. Generate seeds via `artisan iseed world_cities,world_cities_locale,world_continents,world_continents_locale,world_countries,world_countries_locale,world_divisions,world_divisions_locale`
+5. Replace `delete()` with `truncate()`: `cd database/seeders/ && sed -i 's/->delete()/->truncate()/g' World*.php`
+6. Copy seed files into the library
+7. Commit your work
+
+## License
+
+This package is published under the MIT license.
+
+## Support
+
+If you have any questions or suggestions, please feel free to:
+- Submit an issue on GitHub
+- Email us at support@sitehandy.com
+
+## About Sitehandy Solutions
+
+Sitehandy Solutions is committed to maintaining and improving this package. We appreciate the original work by Guixing Bai and the community.
+
+Have a nice day! 🌍

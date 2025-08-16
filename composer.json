@@ -1,16 +1,16 @@
 {
-    "name": "khsing/world",
-    "description": "Provide countries, states, and cities relations database.",
+    "name": "sitehandy/world",
+    "description": "Provide countries, states, and cities relations database with Laravel 9-12 support.",
     "keywords": [ "world", "country", "city", "region" ],
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": ">7.3|^8.0",
-        "laravel/framework" : "^8.0|^9.0"
+        "php": "^8.1",
+        "laravel/framework" : "^9.0|^10.0|^11.0|^12.0"
     },
     "require-dev": {
         "mockery/mockery": "^1.0",
-        "phpunit/phpunit": "^8.5.8|^9.3.3"
+        "phpunit/phpunit": "^9.3.3|^10.0|^11.0"
     },
     "config": {
         "preferred-install": "dist",
@@ -19,20 +19,20 @@
     },
     "autoload": {
         "psr-4": {
-            "Khsing\\World\\": "src/"
+            "Sitehandy\\World\\": "src/"
         }
     },
     "minimum-stability": "stable",
     "authors": [
         {
-            "name": "Guixing Bai",
-            "email": "khsing.cn@gmail.com"
+            "name": "Sitehandy Solutions",
+            "email": "support@sitehandy.com"
         }
     ],
     "extra": {
         "laravel": {
             "providers": [
-                "Khsing\\World\\WorldServiceProvider"
+                "Sitehandy\\World\\WorldServiceProvider"
             ]
         }
     }

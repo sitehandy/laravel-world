@@ -39,7 +39,7 @@ class CreateWorldCountriesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('world_countries');
+		Schema::dropIfExists('world_countries');
 	}
 
 }

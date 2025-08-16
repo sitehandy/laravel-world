@@ -32,7 +32,7 @@ class CreateWorldDivisionsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('world_divisions');
+		Schema::dropIfExists('world_divisions');
 	}
 
 }

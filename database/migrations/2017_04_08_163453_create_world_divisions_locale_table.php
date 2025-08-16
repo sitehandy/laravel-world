@@ -33,6 +33,6 @@ class CreateWorldDivisionsLocaleTable extends Migration
      */
     public function down()
     {
-        Schema::drop('world_divisions_locale');
+        Schema::dropIfExists('world_divisions_locale');
     }
 }

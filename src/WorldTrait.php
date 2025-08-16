@@ -1,27 +1,34 @@
 <?php
 
-namespace Khsing\World;
+declare(strict_types=1);
 
-use Khsing\World\Exceptions\InvalidCodeException;
+namespace Sitehandy\World;
+
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Sitehandy\World\Exceptions\InvalidCodeException;
 
+/**
+ * World Trait
+ * 
+ * Provides localization functionality for world geographical models.
+ */
 trait WorldTrait
 {
     /**
-     * default locale setting
-     *
-     * @var string
+     * Default locale setting.
      */
-    protected $defaultLocale = "en";
+    protected string $defaultLocale = 'en';
 
     /**
-     * current locale setting
-     *
-     * @var string
+     * Current locale setting.
      */
-    protected $locale = "en";
+    protected string $locale = 'en';
 
-    protected $supported_locales = [
+    /**
+     * Supported locales.
+     */
+    protected array $supportedLocales = [
         'en',
         'zh-cn',
     ];
@@ -29,118 +36,117 @@ trait WorldTrait
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->setLocale(config('app.locale'));
+        $this->setLocale(config('app.locale', 'en'));
     }
 
     /**
-     * setting locale
-     *
-     * @param string $locale
-     * @return void
+     * Set the current locale.
      */
-    public function setLocale($locale)
+    public function setLocale(string $locale): static
     {
         $locale = str_replace('_', '-', strtolower($locale));
+        
         if (Str::startsWith($locale, 'en')) {
             $locale = 'en';
         }
-        if (!in_array($locale, $this->supported_locales)) {
+        
+        if (!in_array($locale, $this->supportedLocales, true)) {
             $locale = 'en';
         }
+        
         $this->locale = $locale;
+        
         return $this;
     }
 
     /**
-     * get locale
-     *
-     * @return string
+     * Get the current locale.
      */
-    public function getLocale()
+    public function getLocale(): string
     {
         return $this->locale;
     }
 
     /**
-     * Get localized instance
-     *
-     * @return object
+     * Get localized instance.
      */
-    protected function getLocalized()
+    protected function getLocalized(): ?Model
     {
         return $this->locales()->where('locale', $this->locale)->first();
     }
 
     /**
-     * Get localized name of instance
-     *
-     * @return string
+     * Get localized name of instance.
      */
-    public function getLocalNameAttribute()
+    public function getLocalNameAttribute(): string
     {
-        if ($this->locale == $this->defaultLocale) {
+        if ($this->locale === $this->defaultLocale) {
             return $this->name;
         }
+        
         $localized = $this->getLocalized();
-        return !is_null($localized)? $localized->name: $this->name;
+        
+        return $localized?->name ?? $this->name;
     }
 
     /**
-     * Get localized Full Name of instance
-     *
-     * @return string
+     * Get localized full name of instance.
      */
-    public function getLocalFullNameAttribute()
+    public function getLocalFullNameAttribute(): string
     {
-        if ($this->locale == $this->defaultLocale) {
+        if ($this->locale === $this->defaultLocale) {
             return $this->full_name;
         }
+        
         $localized = $this->getLocalized();
-        return !is_null($localized)? $localized->full_name: $this->full_name;
+        
+        return $localized?->full_name ?? $this->full_name;
     }
 
     /**
-     * Get alias of locale
-     *
-     * @return string
+     * Get localized alias.
      */
-    public function getLocalAliasAttribute()
+    public function getLocalAliasAttribute(): string
     {
-        if ($this->locale == $this->defaultLocale) {
+        if ($this->locale === $this->defaultLocale) {
             return $this->name;
         }
+        
         $localized = $this->getLocalized();
-        return !is_null($localized)? $localized->alias: $this->name;
+        
+        return $localized?->alias ?? $this->name;
     }
 
     /**
-     * Get alias of locale
-     *
-     * @return string
+     * Get localized abbreviation.
      */
-    public function getLocalAbbrAttribute()
+    public function getLocalAbbrAttribute(): string
     {
-        if ($this->locale == $this->defaultLocale) {
+        if ($this->locale === $this->defaultLocale) {
             return $this->name;
         }
+        
         $localized = $this->getLocalized();
-        return !is_null($localized)? $localized->abbr: $this->name;
+        
+        return $localized?->abbr ?? $this->name;
     }
 
     /**
-     * Get instance by code like country code etc.
-     *
-     * @param string $code
-     * @return instance
+     * Get instance by code (country code, etc.).
+     * 
+     * @throws InvalidCodeException
      */
-    public static function getByCode($code)
+    public static function getByCode(string $code): static
     {
         $code = strtolower($code);
-        $col = \mb_strlen($code) == 3 ? 'code_alpha3' : 'code';
-        $world = self::where($col, $code)->first();
-        if (is_null($world)) {
-            throw new InvalidCodeException("${code} does not exist");
+        $column = mb_strlen($code) === 3 ? 'code_alpha3' : 'code';
+        
+        $world = self::where($column, $code)->first();
+        
+        if (!$world) {
+            throw new InvalidCodeException("Code '{$code}' does not exist");
         }
+        
         return $world;
     }
 }

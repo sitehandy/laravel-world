@@ -1,136 +1,132 @@
 <?php
-namespace Khsing\World\Models;
 
+declare(strict_types=1);
+
+namespace Sitehandy\World\Models;
+
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Khsing\World\WorldTrait;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Sitehandy\World\WorldTrait;
 
 /**
- * Country
+ * Country Model
+ * 
+ * Represents a country with its geographical and political information.
  */
 class Country extends Model
 {
     use WorldTrait;
 
     /**
-     * The database table doesn't use 'created_at' and 'updated_at' so we disable it from Inserts/Updates.
-     *
-     * @var bool
+     * Indicates if the model should be timestamped.
      */
     public $timestamps = false;
 
     /**
-     * The database table used by the model.
-     *
-     * @var string
+     * The table associated with the model.
      */
     protected $table = 'world_countries';
 
     /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
+     * The attributes that should be cast.
      */
     protected $casts = [
         'has_division' => 'boolean',
     ];
 
     /**
-     * append names
-     *
-     * @var array
+     * The accessors to append to the model's array form.
      */
-    protected $appends = ['local_name','local_full_name','local_alias', 'local_abbr', 'local_currency_name'];
+    protected $appends = [
+        'local_name',
+        'local_full_name',
+        'local_alias', 
+        'local_abbr', 
+        'local_currency_name'
+    ];
 
-    public function divisions()
+    /**
+     * Get the divisions for the country.
+     */
+    public function divisions(): HasMany
     {
         return $this->hasMany(Division::class);
     }
 
-    public function cities()
+    /**
+     * Get the cities for the country.
+     */
+    public function cities(): HasMany
     {
         return $this->hasMany(City::class);
     }
 
     /**
-     * Continent of country
-     *
-     * @return Continent
+     * Get the continent that owns the country.
      */
-    public function continent()
+    public function continent(): BelongsTo
     {
         return $this->belongsTo(Continent::class);
     }
 
     /**
-     * Get next level
-     *
-     * @return collection
+     * Get the next level geographical entities (divisions or cities).
      */
-    public function children()
+    public function children(): Collection
     {
-        if ($this->has_division == true) {
-            return $this->divisions;
-        }
-        return $this->cities;
+        return $this->has_division ? $this->divisions : $this->cities;
     }
 
     /**
-     * Get up level
-     *
-     * @return Continent
+     * Get the parent geographical entity (continent).
      */
-    public function parent()
+    public function parent(): ?Continent
     {
         return $this->continent;
     }
 
-    public function locales()
+    /**
+     * Get the locales for the country.
+     */
+    public function locales(): HasMany
     {
         return $this->hasMany(CountryLocale::class);
     }
 
     /**
-     * Get alias of locale
-     *
-     * @return string
+     * Get localized currency name.
      */
-    public function getLocalCurrencyNameAttribute()
+    public function getLocalCurrencyNameAttribute(): string
     {
-        if ($this->locale == $this->defaultLocale) {
+        if ($this->locale === $this->defaultLocale) {
             return $this->currency_name;
         }
+        
         $localized = $this->getLocalized();
-        if (!is_null($localized)) {
-            return !is_null($localized->currency_name) ? $localized->currency_name: $this->currency_name;
-        }
-        return $this->currency_name;
+        
+        return $localized?->currency_name ?? $this->currency_name;
     }
+    
     /**
-     * Get country by name
-     *
-     * @param string $name
-     * @return collection
+     * Get country by name.
      */
-    public static function getByName($name)
+    public static function getByName(string $name): ?self
     {
         $localized = CountryLocale::where('name', $name)->first();
-        if (is_null($localized)) {
-            return $localized;
-        }
-        return $localized->country;
+        
+        return $localized?->country;
     }
 
     /**
-     * Search country by name
-     *
-     * @param string $name
-     * @return collection
+     * Search countries by name.
      */
-    public static function searchByName($name)
+    public static function searchByName(string $name): Collection
     {
-        return CountryLocale::where('name', 'like', "%" . $name . "%")
-            ->get()->map(function ($item) {
-                return $item->country;
-            });
+        return CountryLocale::where('name', 'like', "%{$name}%")
+            ->get()
+            ->map(fn($item) => $item->country)
+            ->filter();
     }
 }

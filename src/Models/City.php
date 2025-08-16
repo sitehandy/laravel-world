@@ -1,133 +1,134 @@
 <?php
 
-namespace Khsing\World\Models;
+declare(strict_types=1);
 
-use Illuminate\Database\Eloquent\Model;
-use Khsing\World\WorldTrait;
+namespace Sitehandy\World\Models;
+
 use DateTime;
 use DateTimeZone;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Sitehandy\World\WorldTrait;
 
 /**
- * City.
+ * City Model
+ * 
+ * Represents a city with its geographical and timezone information.
  */
 class City extends Model
 {
     use WorldTrait;
 
     /**
-     * The database table doesn't use 'created_at' and 'updated_at' so we disable it from Inserts/Updates.
-     *
-     * @var bool
+     * Indicates if the model should be timestamped.
      */
     public $timestamps = false;
 
     /**
-     * The database table used by the model.
-     *
-     * @var string
+     * The table associated with the model.
      */
     protected $table = 'world_cities';
 
     /**
-     * append names.
-     *
-     * @var array
+     * The accessors to append to the model's array form.
      */
-    protected $appends = ['local_name', 'local_full_name', 'local_alias', 'local_abbr'];
+    protected $appends = [
+        'local_name', 
+        'local_full_name', 
+        'local_alias', 
+        'local_abbr'
+    ];
 
-    public function country()
+    /**
+     * Get the country that owns the city.
+     */
+    public function country(): BelongsTo
     {
         return $this->belongsTo(Country::class);
     }
 
-    public function division()
+    /**
+     * Get the division that owns the city.
+     */
+    public function division(): BelongsTo
     {
         return $this->belongsTo(Division::class);
     }
 
-    public function children()
+    /**
+     * Get child geographical entities (cities have no children).
+     */
+    public function children(): null
     {
         return null;
     }
 
-    public function parent()
+    /**
+     * Get the parent geographical entity (division or country).
+     */
+    public function parent(): Country|Division|null
     {
-        if ($this->division_id === null) {
-            return $this->country;
-        }
-        return $this->division;
+        return $this->division_id === null ? $this->country : $this->division;
     }
 
-    public function locales()
+    /**
+     * Get the locales for the city.
+     */
+    public function locales(): HasMany
     {
         return $this->hasMany(CityLocale::class);
     }
 
     /**
-     * Get timezone abbreviation.
-     *
-     * @param string $iana_timezone
-     *
-     * @return string
+     * Get timezone abbreviation for a given IANA timezone.
      */
-    public static function timezoneAbbrev($iana_timezone)
+    public static function timezoneAbbrev(string $ianaTimezone): string
     {
-        if (empty($iana_timezone)) return '';
-        if (!in_array($iana_timezone, timezone_identifiers_list(),true)) return '';
+        if (empty($ianaTimezone) || !in_array($ianaTimezone, timezone_identifiers_list(), true)) {
+            return '';
+        }
 
         $dateTime = new DateTime();
-        $dateTime->setTimeZone(new DateTimeZone($iana_timezone));
+        $dateTime->setTimeZone(new DateTimeZone($ianaTimezone));
+        
         return $dateTime->format('T');
     }
 
     /**
-     * Get GMT timezone offset.
-     *
-     * @param string $iana_timezone
-     *
-     * @return string
+     * Get GMT timezone offset for a given IANA timezone.
      */
-    public static function timezoneOffset($iana_timezone)
+    public static function timezoneOffset(string $ianaTimezone): string
     {
-        if (empty($iana_timezone)) return '';
-        if (!in_array($iana_timezone, timezone_identifiers_list(),true)) return '';
-
-        $zones = timezone_identifiers_list();
-
-        $dateTimeZone = new DateTimeZone($iana_timezone);
-        $timeInCity = new DateTime('now', $dateTimeZone);
-        $offset = $dateTimeZone->getOffset( $timeInCity ) / 3600;
-        return "GMT" . ($offset < 0 ? $offset : "+".$offset);
-    }
-
-    /**
-     * Get City by name.
-     *
-     * @param string $name
-     *
-     * @return collection
-     */
-    public static function getByName($name)
-    {
-        $localed = CityLocale::where('name', $name)->first();
-        if (is_null($localed)) {
-            return $localed;
+        if (empty($ianaTimezone) || !in_array($ianaTimezone, timezone_identifiers_list(), true)) {
+            return '';
         }
-        return $localed->city;
+
+        $dateTimeZone = new DateTimeZone($ianaTimezone);
+        $timeInCity = new DateTime('now', $dateTimeZone);
+        $offset = $dateTimeZone->getOffset($timeInCity) / 3600;
+        
+        return 'GMT' . ($offset < 0 ? $offset : "+{$offset}");
     }
 
     /**
-     * Search City by name.
-     *
-     * @param string $name
-     *
-     * @return collection
+     * Get city by name.
      */
-    public static function searchByName($name)
+    public static function getByName(string $name): ?self
     {
-        return CityLocale::where('name', 'like', '%' . $name . '%')
-            ->get()->map(function ($item) {
-                return $item->city;
-            });
+        $localized = CityLocale::where('name', $name)->first();
+        
+        return $localized?->city;
+    }
+
+    /**
+     * Search cities by name.
+     */
+    public static function searchByName(string $name): \Illuminate\Database\Eloquent\Collection
+    {
+        return CityLocale::where('name', 'like', "%{$name}%")
+            ->get()
+            ->map(fn($item) => $item->city)
+            ->filter();
     }
 }

@@ -1,48 +1,41 @@
 <?php
 
-namespace Khsing\World\Console;
+declare(strict_types=1);
+
+namespace Sitehandy\World\Console;
 
 use Illuminate\Console\Command;
 
 /**
- * Init Command.
+ * Initialize World Database Command
+ * 
+ * Sets up the world database tables and seeds them with geographical data.
  */
 class InitCommand extends Command
 {
     /**
      * The name and signature of the console command.
-     *
-     * @var string
      */
     protected $signature = 'world:init';
+    
     /**
      * The console command description.
-     *
-     * @var string
      */
-    protected $description = 'Initialize';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
+    protected $description = 'Initialize world database with geographical data';
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
-    public function handle()
+    public function handle(): int
     {
-        $this->info('Execute migrate first, migrating...');
+        $this->info('Running database migrations...');
         $this->call('migrate');
-        $this->info('Seeding datas');
-        $this->call('db:seed', ['--class'=>'WorldTablesSeeder']);
-        $this->info('Done!');
+        
+        $this->info('Seeding world geographical data...');
+        $this->call('db:seed', ['--class' => 'WorldTablesSeeder']);
+        
+        $this->info('World database initialization completed successfully!');
+        
+        return self::SUCCESS;
     }
 }

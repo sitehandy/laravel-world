@@ -34,6 +34,6 @@ class CreateWorldCountriesLocaleTable extends Migration
      */
     public function down()
     {
-        Schema::drop('world_countries_locale');
+        Schema::dropIfExists('world_countries_locale');
     }
 }

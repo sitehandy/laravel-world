@@ -1,6 +1,6 @@
 <?php
 
-namespace Khsing\World\Exceptions;
+namespace Sitehandy\World\Exceptions;
 
 /**
  * InvalidCodeException.

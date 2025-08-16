@@ -1,9 +1,9 @@
 <?php
 
-namespace Khsing\World\Models;
+namespace Sitehandy\World\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Khsing\World\WorldTrait;
+use Sitehandy\World\WorldTrait;
 
 /**
  * Language.

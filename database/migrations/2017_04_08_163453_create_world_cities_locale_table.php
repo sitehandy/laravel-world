@@ -32,6 +32,6 @@ class CreateWorldCitiesLocaleTable extends Migration
      */
     public function down()
     {
-        Schema::drop('world_cities_locale');
+        Schema::dropIfExists('world_cities_locale');
     }
 }

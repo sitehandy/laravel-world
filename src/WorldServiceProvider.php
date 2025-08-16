@@ -1,23 +1,23 @@
 <?php
-namespace Khsing\World;
+
+declare(strict_types=1);
+
+namespace Sitehandy\World;
 
 use Illuminate\Support\ServiceProvider;
+use Sitehandy\World\Console\InitCommand;
 
+/**
+ * World Service Provider
+ * 
+ * Provides Laravel service provider functionality for the Sitehandy World package.
+ */
 class WorldServiceProvider extends ServiceProvider
 {
     /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = false;
-
-    /**
      * Bootstrap the application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->publishMigrations();
         $this->publishSeeds();
@@ -25,35 +25,36 @@ class WorldServiceProvider extends ServiceProvider
 
     /**
      * Register the application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->registerCommands();
     }
 
     /**
-     * Publish migration file.
+     * Publish migration files.
      */
-    private function publishMigrations()
+    private function publishMigrations(): void
     {
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations/');
         // $this->publishes([__DIR__ . '/../database/migrations/' => base_path('database/migrations')], 'migrations');
     }
 
     /**
-     * Publish seeder file.
+     * Publish seeder files.
      */
-    private function publishSeeds()
+    private function publishSeeds(): void
     {
         $this->publishes([__DIR__ . '/../database/seeders/' => base_path('database/seeders')], 'seeders');
     }
 
-    private function registerCommands()
+    /**
+     * Register console commands.
+     */
+    private function registerCommands(): void
     {
         $this->commands([
-            \Khsing\World\Console\InitCommand::class,
+            InitCommand::class,
         ]);
     }
 }

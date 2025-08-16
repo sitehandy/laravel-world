@@ -28,7 +28,7 @@ class CreateWorldContinentsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('world_continents');
+		Schema::dropIfExists('world_continents');
 	}
 
 }
