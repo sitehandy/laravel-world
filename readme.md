@@ -1,7 +1,7 @@
-# Sitehandy World Database
+# Sitehandy Laravel World Database
 
-[![Latest Stable Version](https://poser.pugx.org/sitehandy/world/v/stable)](https://packagist.org/packages/sitehandy/world)
-[![License](https://poser.pugx.org/sitehandy/world/license)](https://packagist.org/packages/sitehandy/world)
+[![Latest Stable Version](https://poser.pugx.org/sitehandy/laravel-world/v/stable)](https://packagist.org/packages/sitehandy/laravel-world)
+[![License](https://poser.pugx.org/sitehandy/laravel-world/license)](https://packagist.org/packages/sitehandy/laravel-world)
 [![Laravel](https://img.shields.io/badge/Laravel-9%2B-orange.svg)](https://laravel.com)
 
 This package provides World Countries, Regions, and Cities database with locale support for Laravel 9-12.
@@ -103,7 +103,7 @@ Right now, only English(default and fallback) and Chinese-Simp `zh-cn` are suppo
 ### Step 1: Install via Composer
 
 ```bash
-composer require sitehandy/world
+composer require sitehandy/laravel-world
 ```
 
 ### Step 2: Service Provider (Laravel < 5.5 only)
@@ -278,7 +278,7 @@ If you want contribute to this library, issue and pr are welcome. please followi
 ## Changelog
 
 ### Version 1.0.0 (2025-08-16)
-- **Initial release** of sitehandy/world package
+- **Initial release** of sitehandy/laravel-world package
 - **Breaking change**: Namespace changed from `Khsing\World` to `Sitehandy\World`
 - **Added**: Full Laravel 9-12 compatibility with modern syntax
 - **Added**: PHP 8.1+ support with strict type requirements

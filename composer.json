@@ -1,5 +1,5 @@
 {
-    "name": "sitehandy/world",
+    "name": "sitehandy/laravel-world",
     "description": "Provide countries, states, and cities relations database with Laravel 9-12 support.",
     "keywords": [ "world", "country", "city", "region" ],
     "type": "library",
